@@ -1,0 +1,38 @@
+<.header>
+  Employee <%= @employee.id %>
+  <:subtitle>This is a employee record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/employees/#{@employee}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit employee</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @employee.name %></:item>
+  <:item title="Address"><%= @employee.address %></:item>
+  <:item title="Phone"><%= @employee.phone %></:item>
+  <:item title="Email"><%= @employee.email %></:item>
+  <:item title="Birth date"><%= @employee.birth_date %></:item>
+  <:item title="Department"><%= @employee.department %></:item>
+  <:item title="Contract type"><%= ContractType.get_name(@employee.contract_type) %></:item>
+  <:item title="Join date"><%= @employee.join_date %></:item>
+</.list>
+
+<.back navigate={~p"/employees"}>Back to employees</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="employee-modal"
+  show
+  on_cancel={JS.patch(~p"/employees/#{@employee}")}
+>
+  <.live_component
+    module={EmployeeManagementWeb.EmployeeLive.FormComponent}
+    id={@employee.id}
+    title={@page_title}
+    action={@live_action}
+    employee={@employee}
+    patch={~p"/employees/#{@employee}"}
+  />
+</.modal>
